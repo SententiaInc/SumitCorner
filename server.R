@@ -64,7 +64,7 @@ combine_all <- function(company_ls) {
 read_data <- function(socialmedia="facebook") {
     ## Read Data
     all_companies <- c("statefarm","allstate","geico","libertymutual","progressive","flotheprogressivegirl","nationwideinsurance")
-    dir_contents <- list.files()
+    dir_contents <- list.files('test_data/')
     current_companies <- c()
     
     for (i in 1:length(all_companies)) {
@@ -81,7 +81,7 @@ read_data <- function(socialmedia="facebook") {
         }
         
         if (csv_name %in% dir_contents) {
-            temp <- read.csv(csv_name, head=T, sep=",")
+            temp <- read.csv(paste0('test_data/',csv_name), head=T, sep=",")
             if ('date_published' %in% names(temp)) {
                 temp$hour_of_day <- unlist(lapply(temp$date_published, time_of_day))
                 temp$day_of_week <- unlist(lapply(temp$date_published, day_of_week))
