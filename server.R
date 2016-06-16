@@ -64,7 +64,7 @@ combine_all <- function(company_ls) {
 read_data <- function(socialmedia="facebook") {
     ## Read Data
     all_companies <- c("statefarm","allstate","geico","libertymutual","progressive","flotheprogressivegirl","nationwideinsurance")
-    dir_contents <- list.files('test_data/')
+    dir_contents <- list.files()
     current_companies <- c()
     
     for (i in 1:length(all_companies)) {
@@ -81,7 +81,7 @@ read_data <- function(socialmedia="facebook") {
         }
         
         if (csv_name %in% dir_contents) {
-            temp <- read.csv(paste0('test_data/',csv_name), head=T, sep=",")
+            temp <- read.csv(csv_name, head=T, sep=",")
             if ('date_published' %in% names(temp)) {
                 temp$hour_of_day <- unlist(lapply(temp$date_published, time_of_day))
                 temp$day_of_week <- unlist(lapply(temp$date_published, day_of_week))
@@ -111,14 +111,17 @@ shinyServer(function(input, output) {
     
     ranges <- reactiveValues(x = NULL, y = NULL)
     company_ls <- reactive({ sapply(input$companies, function(i) paste0(i, "_fbook")) })
-    current_dat <- reactive({ subset(full_dat, Label %in% company_ls() ) })
-    
-    observeEvent(input$searchButton, {
-        if (!is.null(input$search)) {
-            current_dat <- subset(current_dat(), grepl(input$search, status_message) == TRUE)
+    current_dat <- reactive({
+        if (input$searchButton & input$search!="") {
+            keep_index1 <- grep(input$search, full_dat$status_message, ignore.case=T, fixed=F, value=F)
+            keep_index2 <- which(full_dat$Label %in% company_ls())
+            full_dat[intersect(keep_index1, keep_index2), ]
+        } else {
+            subset(full_dat, Label %in% company_ls() )
         }
-        
     })
+    
+    
     
     output$plot1 <- renderPlot({
         if (input$type == "time series") {
