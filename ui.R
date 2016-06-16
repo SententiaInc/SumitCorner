@@ -15,31 +15,36 @@ all_companies <- c("statefarm","allstate","geico","libertymutual","progressive",
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(theme = "bootstrap.css", 
-  
-  # Application title
-  titlePanel("Social Media Analytics"),
-  
-  plotOutput("plot1",
-             dblclick = "plot1_dblclick",
-             brush=brushOpts(id="plot1_brush", resetOnNew = TRUE)),
-  fluidRow(column(12,verbatimTextOutput("info"))), 
-  fluidRow(column(6,tableOutput("cor_summary")),
-           column(6,verbatimTextOutput("summary"))
-  ),
-  hr(), 
-  
-  fluidRow(
-    column(4, 
-    checkboxGroupInput("companies", h4("Companies:"), 
-                       choices = all_companies, selected="statefarm"),
     
-    selectInput("socialmedia", h4("Social Media:"), choices=c("facebook")),
+    # Application title'
+    #fluidRow(column(12, titlePanel("Social Media Analytics"))),
     
-    actionButton("updateButton", "Update data")
+    fluidRow(column(12, headerPanel(
+      h1("Social Media Analytics",
+         style = "background-color: #4d3a7d;")))),
     
-    #dateRangeInput("dates", label = h4("Date range"))
+    plotOutput("plot1",
+               dblclick = "plot1_dblclick",
+               brush=brushOpts(id="plot1_brush", resetOnNew = TRUE)),
+    fluidRow(column(12,verbatimTextOutput("info"))), 
+    fluidRow(column(6,
+                    tableOutput("cor_summary")),column(6,
+                                                       verbatimTextOutput("summary"))
     ),
-    
+    hr(), 
+
+    fluidRow(
+        column(4, 
+               checkboxGroupInput("companies", h4("Companies:"), 
+                                  choices = all_companies, selected="statefarm"),
+               
+               selectInput("socialmedia", h4("Social Media:"), choices=c("facebook")),
+               
+               actionButton("updateButton", "Update data")
+               
+               #dateRangeInput("dates", label = h4("Date range"))
+        ),
+        
     column(4,  
            dateRangeInput("dates", label = h4("Date Range"), start='2000-01-01'),
            
