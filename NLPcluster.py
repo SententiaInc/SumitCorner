@@ -23,7 +23,7 @@ geico_data = pd.read_csv(data_path+"geico_facebook_statuses.csv", header=0,sep="
 lm_data = pd.read_csv(data_path+"libertymutual_facebook_statuses.csv", header=0,sep="," ).fillna('')
 nation_data = pd.read_csv(data_path+"nationwide_facebook_statuses.csv", header=0,sep="," ).fillna('')
 pro_data = pd.read_csv(data_path+"progressive_facebook_statuses.csv", header=0,sep="," ).fillna('')
-
+as_data = pd.read_csv(data_path+"allstate_facebook_statuses.csv", header=0,sep="," ).fillna('')
 
 def clean_sentence(msg):
     text = re.sub("[^a-zA-Z]"," ", msg)
@@ -34,7 +34,7 @@ def clean_sentence(msg):
 
 def load_data(all_data = True):
     if all_data:
-        facebook_status = pd.concat([sf_data,fpg_data,geico_data,lm_data,nation_data,pro_data],ignore_index=True)
+        facebook_status = pd.concat([sf_data,fpg_data,geico_data,lm_data,nation_data,pro_data,as_data],ignore_index=True)
     else:
         facebook_status = sf_data
     return facebook_status
@@ -80,8 +80,10 @@ for i in range(num_col):
         fw.write('LibertyMutual %d\n'%idx[i])
     elif i < sf_data.shape[0] + fpg_data.shape[0] + geico_data.shape[0] + lm_data.shape[0] + nation_data.shape[0]:
         fw.write('Nationwide %d\n'%idx[i])
-    else:
+    elif i < sf_data.shape[0] + fpg_data.shape[0] + geico_data.shape[0] + lm_data.shape[0] + nation_data.shape[0] + pro_data.shape[0]:
         fw.write('Progressive %d\n'%idx[i])
+    else:
+    	fw.write('All State %d\n'%idx[i])
 fw.close()
 
 print('clustering completed')

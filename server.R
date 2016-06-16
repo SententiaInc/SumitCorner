@@ -7,32 +7,6 @@
 #    http://shiny.rstudio.com/
 #
 
-plot_XY <- function(company_ls, X='date_published', Y='num_reactions', env=.GlobalEnv, ...) {
-    for (i in 1:length(company_ls)) {
-        temp_comp <- get(company_ls[i], envir = env)
-        
-        if (i == 1) {
-            plot(temp_comp[,X], temp_comp[,Y], col=i, ..., xlab=X, ylab=Y)
-        } else {
-            points(temp_comp[,X], temp_comp[,Y], col=i)   
-        }
-    }
-    legend("topright", legend=company_ls, fill=1:length(company_ls))
-    
-}
-
-plot_hist <- function(company_ls, X='num_likes', ...) {
-    for (i in 1:length(company_ls)) {
-        if (i == 1) {
-            hist(get(company_ls[i])[,X], col=i, density=10, ..., xlab=X)
-        } else {
-            hist(get(company_ls[i])[,X], col=i, add=TRUE, density=10, ...)
-        }
-    }
-    legend("topright", legend=company_ls, fill=1:length(company_ls))
-}
-
-
 library(shiny)
 library(ggplot2)
 
@@ -47,10 +21,20 @@ time_of_day <- function(val) {
     return(hours + minutes + seconds)
 }
 
+time_of_day_Date <- function(val){
+  
+  
+}
+
+
 ## Get day of week from UNIX time value
 day_of_week <- function(val) {
     return(weekdays(as.POSIXct(val, origin="1970-01-01")))
 }
+
+
+
+
 
 combine_all <- function(company_ls) {
     ## Combine all data into single data.frame
@@ -189,7 +173,7 @@ shinyServer(function(input, output) {
   
     
     
-    output$summary <- renderPrint({ dim(current_dat()) })
+    output$summary <- renderPrint({ input$dates })
     
     eventReactive(input$updateButton, {
         system('python Facebook_scraper.py statefarm')

@@ -23,9 +23,8 @@ shinyUI(fluidPage(theme = "bootstrap.css",
              dblclick = "plot1_dblclick",
              brush=brushOpts(id="plot1_brush", resetOnNew = TRUE)),
   fluidRow(column(12,verbatimTextOutput("info"))), 
-  fluidRow(column(6,
-                  tableOutput("cor_summary")),column(6,
-                  verbatimTextOutput("summary"))
+  fluidRow(column(6,tableOutput("cor_summary")),
+           column(6,verbatimTextOutput("summary"))
   ),
   hr(), 
   
