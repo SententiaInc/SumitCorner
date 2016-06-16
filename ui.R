@@ -18,15 +18,6 @@ shinyUI(fluidPage(theme = "bootstrap.css",
     
     # Application title'
     #fluidRow(column(12, titlePanel("Social Media Analytics"))),
-<<<<<<< HEAD
-    tags$div(class = "row rowc scrub",
-             tags$div(class = "col-sm-12",
-                      tags$h1("Social Media Analytics")
-             )         
-    ),
-    #fluidRow(column(12, headerPanel(
-    #  h1("Social Media Analytics",
-=======
     
     tags$div(class = "row rowc scrub",
       tags$div(class = "col-sm-12",
@@ -36,25 +27,15 @@ shinyUI(fluidPage(theme = "bootstrap.css",
     
     #fluidRow(column(12, headerPanel(
     #   h1("Social Media Analytics",
->>>>>>> df7bc42bb64466a0ba57be642ce36674c7e24988
-    #     style = "background-color: #4d3a7d;")))),
+    
+    #style = "background-color: #4d3a7d;")))),
     
     plotOutput("plot1",
                dblclick = "plot1_dblclick",
                brush=brushOpts(id="plot1_brush", resetOnNew = TRUE)),
-<<<<<<< HEAD
     #fluidRow(column(12,verbatimTextOutput("info"))), 
     #fluidRow(column(6,tableOutput("cor_summary")),column(5,verbatimTextOutput("summary"))),
     hr(),
-=======
-     
-    fluidRow(column(12,verbatimTextOutput("info"))), 
-    fluidRow(column(6,
-                    tableOutput("cor_summary")),column(6,
-                                                       verbatimTextOutput("summary"))
-    ),
-    hr(), 
->>>>>>> df7bc42bb64466a0ba57be642ce36674c7e24988
 
     fluidRow(
         column(4, 
@@ -68,7 +49,7 @@ shinyUI(fluidPage(theme = "bootstrap.css",
                #dateRangeInput("dates", label = h4("Date range"))
         ),
         
-    column(4,  
+        column(4,  
            dateRangeInput("dates", label = h4("Date Range"), start='2000-01-01'),
            
            textInput("search", h4("Search Filter:"), ""),
@@ -77,8 +58,8 @@ shinyUI(fluidPage(theme = "bootstrap.css",
            
            selectInput("statistic", h4("Statistic of Interest:"), choices=c("num_reactions", "num_comments","num_shares"))
            
-    ),
-    column(4, selectInput("NLPcategory", h4("Semantics Clusters"), choices=c('All','0','1','2','3','4')),
+        ),
+        column(4, selectInput("NLPcategory", h4("Semantics Clusters"), choices=c('All','0','1','2','3','4')),
            selectInput("type", h4("Type of Plot:"), choices=c("frequency", "time series")),
            
            
@@ -91,14 +72,10 @@ shinyUI(fluidPage(theme = "bootstrap.css",
                  "day_of_week"))
            )
     
-<<<<<<< HEAD
-  )),
+      )
+  ),
   hr(),
   fluidRow(column(12,verbatimTextOutput("info"))),
   fluidRow(column(6,tableOutput("cor_summary")),column(6,verbatimTextOutput("summary")))
-))
-=======
-  )
   
-)))
->>>>>>> df7bc42bb64466a0ba57be642ce36674c7e24988
+))
