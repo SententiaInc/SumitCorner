@@ -18,6 +18,7 @@ shinyUI(fluidPage(theme = "bootstrap.css",
     
     # Application title'
     #fluidRow(column(12, titlePanel("Social Media Analytics"))),
+<<<<<<< HEAD
     tags$div(class = "row rowc scrub",
              tags$div(class = "col-sm-12",
                       tags$h1("Social Media Analytics")
@@ -25,14 +26,35 @@ shinyUI(fluidPage(theme = "bootstrap.css",
     ),
     #fluidRow(column(12, headerPanel(
     #  h1("Social Media Analytics",
+=======
+    
+    tags$div(class = "row rowc scrub",
+      tags$div(class = "col-sm-12",
+        tags$h1("Social Media Analytics")
+      )         
+    ),
+    
+    #fluidRow(column(12, headerPanel(
+    #   h1("Social Media Analytics",
+>>>>>>> df7bc42bb64466a0ba57be642ce36674c7e24988
     #     style = "background-color: #4d3a7d;")))),
     
     plotOutput("plot1",
                dblclick = "plot1_dblclick",
                brush=brushOpts(id="plot1_brush", resetOnNew = TRUE)),
+<<<<<<< HEAD
     #fluidRow(column(12,verbatimTextOutput("info"))), 
     #fluidRow(column(6,tableOutput("cor_summary")),column(5,verbatimTextOutput("summary"))),
     hr(),
+=======
+     
+    fluidRow(column(12,verbatimTextOutput("info"))), 
+    fluidRow(column(6,
+                    tableOutput("cor_summary")),column(6,
+                                                       verbatimTextOutput("summary"))
+    ),
+    hr(), 
+>>>>>>> df7bc42bb64466a0ba57be642ce36674c7e24988
 
     fluidRow(
         column(4, 
@@ -69,8 +91,14 @@ shinyUI(fluidPage(theme = "bootstrap.css",
                  "day_of_week"))
            )
     
+<<<<<<< HEAD
   )),
   hr(),
   fluidRow(column(12,verbatimTextOutput("info"))),
   fluidRow(column(6,tableOutput("cor_summary")),column(6,verbatimTextOutput("summary")))
 ))
+=======
+  )
+  
+)))
+>>>>>>> df7bc42bb64466a0ba57be642ce36674c7e24988
