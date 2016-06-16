@@ -42,23 +42,23 @@ shinyUI(fluidPage(theme = "bootstrap.css",
     ),
     
     column(4,  
-           dateRangeInput("dates", label = h4("Date range")),
+           dateRangeInput("dates", label = h4("Date Range")),
            
-           textInput("search", h4("Search filter:"), ""),
+           textInput("search", h4("Search Filter:"), ""),
            
            actionButton("searchButton", "Search"), 
            
            selectInput("statistic", h4("Statistic of Interest:"), choices=c("num_reactions", "num_comments","num_shares"))
            
     ),
-    column(4, selectInput("NLPcategory", h4("NLP category"), choices=c('All','1','2','3')),
+    column(4, selectInput("NLPcategory", h4("Semantics Clusters"), choices=c('All','1','2','3')),
            selectInput("type", h4("Type of Plot:"), choices=c("frequency", "time series")),
            
            
            conditionalPanel(
              condition = "input.type == 'frequency'",
              selectInput(
-               "by", h4("By:"),
+               "by", h4("Frequency By:"),
                c("all",
                  "hour_of_day",
                  "day_of_week"))
