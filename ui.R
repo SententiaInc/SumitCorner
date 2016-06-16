@@ -19,13 +19,20 @@ shinyUI(fluidPage(theme = "bootstrap.css",
     # Application title'
     #fluidRow(column(12, titlePanel("Social Media Analytics"))),
     
-    fluidRow(column(12, headerPanel(
-      h1("Social Media Analytics",
-         style = "background-color: #4d3a7d;")))),
+    tags$div(class = "row rowc",
+      tags$div(class = "col-sm-12",
+        tags$h1("Social Media Analytics")
+      )         
+    ),
+    
+    #fluidRow(column(12, headerPanel(
+    #   h1("Social Media Analytics",
+    #     style = "background-color: #4d3a7d;")))),
     
     plotOutput("plot1",
                dblclick = "plot1_dblclick",
                brush=brushOpts(id="plot1_brush", resetOnNew = TRUE)),
+     
     fluidRow(column(12,verbatimTextOutput("info"))), 
     fluidRow(column(6,
                     tableOutput("cor_summary")),column(6,
