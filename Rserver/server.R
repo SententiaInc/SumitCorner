@@ -113,21 +113,30 @@ shinyServer(function(input, output) {
     company_ls <- reactive({ sapply(input$companies, function(i) paste0(i, "_fbook")) })
     current_dat <- reactive({ subset(full_dat, Label %in% company_ls() ) })
     
+    observeEvent(input$searchButton, {
+        if (!is.null(input$search)) {
+            current_dat <- subset(current_dat(), grepl(input$search, status_message) == TRUE)
+        }
+        
+    })
+    
     output$plot1 <- renderPlot({
         if (input$type == "time series") {
-            ggplot(data=current_dat(), aes(x=status_published, y=num_reactions, group=Label, colour=Label)) +
-                geom_line()
-        }
-        if (input$type == "frequency") {
+            ggplot(data=current_dat(), aes_string(x='date_published', y=input$statistic, group='Label', colour='Label')) +
+                geom_point() + 
+                coord_cartesian(xlim = ranges$x, ylim = ranges$y)
+        } else if (input$type == "frequency") {
             if (input$by == "all") {
-                plot_hist(company_ls(), X=input$statistic)    
-            }
-            if (input$by == "day_of_week") {
-                p <- ggplot(data = current_dat, aes_string(x="day_of_week", y=input$statistic)) + geom_boxplot(aes(fill=Label))
-                p + facet_wrap( ~ day_of_week, scales="free")    
-            }
-            if (input$by == "hour_of_day") {
-                plot_XY(company_ls(), 'hour_of_day', input$statistic)    
+                ggplot(data=current_dat(), aes_string(x=input$statistic, fill='Label')) + geom_density(alpha=.3) + 
+                    coord_cartesian(xlim = ranges$x, ylim = ranges$y)
+            } else if (input$by == "day_of_week") {
+                p <- ggplot(data = current_dat(), aes_string(x="day_of_week", y=input$statistic)) + geom_boxplot(aes(fill=Label))
+                p + facet_wrap( ~ day_of_week, scales="free") + 
+                    coord_cartesian(xlim = ranges$x, ylim = ranges$y)
+            } else if (input$by == "hour_of_day") {
+                ggplot(data=current_dat(), aes_string(x='hour_of_day', y=input$statistic, group='Label', colour='Label')) +
+                    geom_point() + 
+                    coord_cartesian(xlim = ranges$x, ylim = ranges$y)
             }
         }
     
@@ -140,7 +149,7 @@ shinyServer(function(input, output) {
     env <- environment()
   
     if (FALSE) {
-    output$summary <- renderPrint({
+        output$summary <- renderPrint({
       n_temp <- dim(statefarm_fbook)[1]
       str(list('total posts'=n_temp,
                'has shares'=sum(!is.na(statefarm_fbook$num_shares) & statefarm_fbook$num_shares!=0) / n_temp,
@@ -152,8 +161,15 @@ shinyServer(function(input, output) {
     }
     
     output$info <- renderPrint({
-      brushedPoints(get(company_ls()[1], envir = .GlobalEnv), input$plot1_brush,
-                    xvar = "date_published", yvar = input$statistic)  
+        if (input$type == "time series") {
+            xvar = "date_published"
+        } else if (input$by == "hour_of_day") {
+            xvar = "hour_of_day"
+        } else if (input$by == "day_of_week") {
+            xvar = "hour_of_day"    
+        }
+      brushedPoints(current_dat(), input$plot1_brush,
+                    xvar = xvar, yvar = input$statistic)  
   })
   
     observeEvent(input$plot1_dblclick, {
@@ -168,12 +184,7 @@ shinyServer(function(input, output) {
       }
     })
   
-    observeEvent(input$searchButton, {
-        if (!is.null(input$search)) {
-            bar <- subset(full_dat, grepl(input$search, status_message) == TRUE)
-        }
-        
-    })
+    
     
     output$summary <- renderPrint({ dim(current_dat()) })
     
