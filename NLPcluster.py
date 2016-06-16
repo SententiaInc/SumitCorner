@@ -71,19 +71,20 @@ else:
 fw = open(data_file, 'w')
 for i in range(num_col):
     if i < sf_data.shape[0]:
-        fw.write('StateFarm %d\n'%idx[i])
+        fw.write('%s StateFarm %d\n'%(facebook_status['status_id'][i],idx[i]))
     elif i < sf_data.shape[0] + fpg_data.shape[0]:
-        fw.write('FlotheProgressiveGirl %d\n'%idx[i])
+        fw.write('%s FlotheProgressiveGirl %d\n'%(facebook_status['status_id'][i],idx[i]))
     elif i < sf_data.shape[0] + fpg_data.shape[0] + geico_data.shape[0]:
-        fw.write('Geico %d\n'%idx[i])
+        fw.write('%s Geico %d\n'%(facebook_status['status_id'][i],idx[i]))
     elif i < sf_data.shape[0] + fpg_data.shape[0] + geico_data.shape[0] + lm_data.shape[0]:
-        fw.write('LibertyMutual %d\n'%idx[i])
+        fw.write('%s LibertyMutual %d\n'%(facebook_status['status_id'][i],idx[i]))
     elif i < sf_data.shape[0] + fpg_data.shape[0] + geico_data.shape[0] + lm_data.shape[0] + nation_data.shape[0]:
-        fw.write('Nationwide %d\n'%idx[i])
+        fw.write('%s Nationwide %d\n'%(facebook_status['status_id'][i],idx[i]))
     elif i < sf_data.shape[0] + fpg_data.shape[0] + geico_data.shape[0] + lm_data.shape[0] + nation_data.shape[0] + pro_data.shape[0]:
-        fw.write('Progressive %d\n'%idx[i])
+        fw.write('%s Progressive %d\n'%(facebook_status['status_id'][i],idx[i]))
     else:
-    	fw.write('All State %d\n'%idx[i])
+    	fw.write('%s AllState %d\n'%(facebook_status['status_id'][i],idx[i]))
 fw.close()
 
 print('clustering completed')
+
