@@ -47,7 +47,7 @@ combine_all <- function(company_ls) {
 
 read_data <- function(socialmedia="facebook") {
     ## Read Data
-    all_companies <- c("statefarm","allstate","geico","libertymutual","progressive","flotheprogressivegirl","nationwideinsurance")
+    all_companies <- c("statefarm","allstate","geico","libertymutual","progressive","flotheprogressivegirl","nationwide")
     dir_contents <- list.files('test_data/')
     current_companies <- c()
     
@@ -87,6 +87,9 @@ read_data <- function(socialmedia="facebook") {
 read_data('facebook')
 full_dat <- combine_all(current_companies)
 
+idx <- read.table("all_idx.data")
+colnames(idx) <- c("status_id", "company", "NLPcluster")
+full_dat <- merge(full_dat, idx, by.x='status_id', by.y='status_id')
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
@@ -99,9 +102,15 @@ shinyServer(function(input, output) {
         if (input$searchButton & input$search!="") {
             keep_index1 <- grep(input$search, full_dat$status_message, ignore.case=T, fixed=F, value=F)
             keep_index2 <- which(full_dat$Label %in% company_ls())
-            full_dat[intersect(keep_index1, keep_index2), ]
+            keep_index3 <- which(as.Date(full_dat$status_published) < as.Date(format(input$dates[2])) &
+                                     as.Date(full_dat$status_published) > as.Date(format(input$dates[1])))
+            keep_index4 <- which(full_dat$NLPcluster == input$NLPcategory | input$NLPcategory == 'All')
+            full_dat[intersect(intersect(keep_index1, keep_index2), intersect(keep_index3, keep_index4)), ]
         } else {
-            subset(full_dat, Label %in% company_ls() )
+            subset(full_dat, Label %in% company_ls() &
+                       as.Date(status_published) <= as.Date(format(input$dates[2])) &
+                       as.Date(status_published) > as.Date(format(input$dates[1])) &
+                       (NLPcluster == input$NLPcategory | input$NLPcategory == 'All'))
         }
     })
     
@@ -130,22 +139,21 @@ shinyServer(function(input, output) {
     })
   
     output$cor_summary <- renderTable({
-      cor(get(company_ls()[1], envir = .GlobalEnv)[,c(7,8,9)], use="pairwise.complete.obs")
+      cor(current_dat()[,c(7,8,9)], use="pairwise.complete.obs")
     })
   
     env <- environment()
   
-    if (FALSE) {
-        output$summary <- renderPrint({
-      n_temp <- dim(statefarm_fbook)[1]
-      str(list('total posts'=n_temp,
-               'has shares'=sum(!is.na(statefarm_fbook$num_shares) & statefarm_fbook$num_shares!=0) / n_temp,
-               'has reactions'=sum(!is.na(statefarm_fbook$num_reactions) & statefarm_fbook$num_reactions!=0) / n_temp,
-               'has comments'=sum(!is.na(statefarm_fbook$num_comments) & statefarm_fbook$num_comments!=0) / n_temp
-               ))
-  })
+
+    output$summary <- renderPrint({
+        n_temp <- dim(statefarm_fbook)[1]
+        str(list('total posts'=n_temp,
+                   'has shares'=sum(!is.na(statefarm_fbook$num_shares) & statefarm_fbook$num_shares!=0) / n_temp,
+                   'has reactions'=sum(!is.na(statefarm_fbook$num_reactions) & statefarm_fbook$num_reactions!=0) / n_temp,
+                   'has comments'=sum(!is.na(statefarm_fbook$num_comments) & statefarm_fbook$num_comments!=0) / n_temp
+                   ))
+    })
       
-    }
     
     output$info <- renderPrint({
         if (input$type == "time series") {
@@ -153,7 +161,9 @@ shinyServer(function(input, output) {
         } else if (input$by == "hour_of_day") {
             xvar = "hour_of_day"
         } else if (input$by == "day_of_week") {
-            xvar = "hour_of_day"    
+            xvar = "day_of_week"    
+        } else {
+            xvar = NULL
         }
       brushedPoints(current_dat(), input$plot1_brush,
                     xvar = xvar, yvar = input$statistic)  
@@ -173,7 +183,7 @@ shinyServer(function(input, output) {
   
     
     
-    output$summary <- renderPrint({ input$dates })
+    # output$summary <- renderText({ dim(current_dat()) })
     
     eventReactive(input$updateButton, {
         system('python Facebook_scraper.py statefarm')

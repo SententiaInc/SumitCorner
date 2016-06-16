@@ -10,7 +10,7 @@
 library(shiny)
 
 
-all_companies <- c("statefarm","allstate","geico","libertymutual","progressive","flotheprogressivegirl","nationwideinsurance")
+all_companies <- c("statefarm","allstate","geico","libertymutual","progressive","flotheprogressivegirl","nationwide")
 
 
 # Define UI for application that draws a histogram
@@ -41,7 +41,7 @@ shinyUI(fluidPage(theme = "bootstrap.css",
     ),
     
     column(4,  
-           dateRangeInput("dates", label = h4("Date Range")),
+           dateRangeInput("dates", label = h4("Date Range"), start='2000-01-01'),
            
            textInput("search", h4("Search Filter:"), ""),
            
@@ -50,7 +50,7 @@ shinyUI(fluidPage(theme = "bootstrap.css",
            selectInput("statistic", h4("Statistic of Interest:"), choices=c("num_reactions", "num_comments","num_shares"))
            
     ),
-    column(4, selectInput("NLPcategory", h4("Semantics Clusters"), choices=c('All','1','2','3')),
+    column(4, selectInput("NLPcategory", h4("Semantics Clusters"), choices=c('All','0','1','2','3','4')),
            selectInput("type", h4("Type of Plot:"), choices=c("frequency", "time series")),
            
            
