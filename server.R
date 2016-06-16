@@ -140,7 +140,7 @@ shinyServer(function(input, output) {
   
     output$cor_summary <- renderTable({
       cor(current_dat()[,c(7,8,9)], use="pairwise.complete.obs")}
-      #caption = "Correlation Matrix",
+      #,caption = "Correlation Matrix",
       #caption.placement = getOption("xtable.caption.placement", "top"), 
       #caption.width = getOption("xtable.caption.width", NULL)
       )
@@ -166,10 +166,13 @@ shinyServer(function(input, output) {
             xvar = "day_of_week"    
         } else {
             xvar = NULL
-            print('error')
         }
-      brushedPoints(current_dat(), input$plot1_brush,
-                    xvar = xvar, yvar = input$statistic)  
+      
+      
+      #point = brushedPoints(current_dat(), input$plot1_brush, xvar = xvar, yvar = input$statistic)
+
+      print(brushedPoints(current_dat(), input$plot1_brush,
+                    xvar = xvar, yvar = input$statistic)[,c('status_type','company','status_message')])
   })
   
     observeEvent(input$plot1_dblclick, {
