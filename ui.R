@@ -14,7 +14,7 @@ all_companies <- c("statefarm","allstate","geico","libertymutual","progressive",
 
 
 # Define UI for application that draws a histogram
-shinyUI(fluidPage(
+shinyUI(fluidPage(theme = "bootstrap.css", 
   
   # Application title
   titlePanel("Old Faithful Geyser Data"),
