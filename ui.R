@@ -19,7 +19,7 @@ shinyUI(fluidPage(theme = "bootstrap.css",
     # Application title'
     #fluidRow(column(12, titlePanel("Social Media Analytics"))),
     
-    tags$div(class = "row rowc",
+    tags$div(class = "row rowc scrub",
       tags$div(class = "col-sm-12",
         tags$h1("Social Media Analytics")
       )         
