@@ -27,18 +27,15 @@ shinyUI(fluidPage(theme = "bootstrap.css",
     
     #fluidRow(column(12, headerPanel(
     #   h1("Social Media Analytics",
-    #     style = "background-color: #4d3a7d;")))),
+    
+    #style = "background-color: #4d3a7d;")))),
     
     plotOutput("plot1",
                dblclick = "plot1_dblclick",
                brush=brushOpts(id="plot1_brush", resetOnNew = TRUE)),
-     
-    fluidRow(column(12,verbatimTextOutput("info"))), 
-    fluidRow(column(6,
-                    tableOutput("cor_summary")),column(6,
-                                                       verbatimTextOutput("summary"))
-    ),
-    hr(), 
+    #fluidRow(column(12,verbatimTextOutput("info"))), 
+    #fluidRow(column(6,tableOutput("cor_summary")),column(5,verbatimTextOutput("summary"))),
+    hr(),
 
     fluidRow(
         column(4, 
@@ -52,7 +49,7 @@ shinyUI(fluidPage(theme = "bootstrap.css",
                #dateRangeInput("dates", label = h4("Date range"))
         ),
         
-    column(4,  
+        column(4,  
            dateRangeInput("dates", label = h4("Date Range"), start='2000-01-01'),
            
            textInput("search", h4("Search Filter:"), ""),
@@ -61,8 +58,8 @@ shinyUI(fluidPage(theme = "bootstrap.css",
            
            selectInput("statistic", h4("Statistic of Interest:"), choices=c("num_reactions", "num_comments","num_shares"))
            
-    ),
-    column(4, selectInput("NLPcategory", h4("Semantics Clusters"), choices=c('All','0','1','2','3','4')),
+        ),
+        column(4, selectInput("NLPcategory", h4("Semantics Clusters"), choices=c('All','0','1','2','3','4')),
            selectInput("type", h4("Type of Plot:"), choices=c("frequency", "time series")),
            
            
@@ -75,6 +72,10 @@ shinyUI(fluidPage(theme = "bootstrap.css",
                  "day_of_week"))
            )
     
-  )
+      )
+  ),
+  hr(),
+  fluidRow(column(12,verbatimTextOutput("info"))),
+  fluidRow(column(6,tableOutput("cor_summary")),column(6,verbatimTextOutput("summary")))
   
-)))
+))

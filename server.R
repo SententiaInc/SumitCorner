@@ -139,21 +139,23 @@ shinyServer(function(input, output) {
     })
   
     output$cor_summary <- renderTable({
-      cor(current_dat()[,c(7,8,9)], use="pairwise.complete.obs")
-    })
+      cor(current_dat()[,c(7,8,9)], use="pairwise.complete.obs")}
+      #,caption = "Correlation Matrix",
+      #caption.placement = getOption("xtable.caption.placement", "top"), 
+      #caption.width = getOption("xtable.caption.width", NULL)
+      )
   
     env <- environment()
-  
-
+    
     output$summary <- renderPrint({
-        n_temp <- dim(statefarm_fbook)[1]
-        str(list('total posts'=n_temp,
-                   'has shares'=sum(!is.na(statefarm_fbook$num_shares) & statefarm_fbook$num_shares!=0) / n_temp,
-                   'has reactions'=sum(!is.na(statefarm_fbook$num_reactions) & statefarm_fbook$num_reactions!=0) / n_temp,
-                   'has comments'=sum(!is.na(statefarm_fbook$num_comments) & statefarm_fbook$num_comments!=0) / n_temp
-                   ))
+          n_temp <- dim(current_dat())[1]
+          #cat("\n")
+          cat(paste0("total posts: ", n_temp, "\n"))
+          cat(paste0("total shares: ", sum(!is.na(current_dat()$num_shares) & current_dat()$num_shares!=0) / n_temp, "\n")) 
+          cat(paste0("total reactions: ", sum(!is.na(current_dat()$num_reactions) & current_dat()$num_reactions!=0) / n_temp, "\n")) 
+          cat(paste0("total comments: ", sum(!is.na(current_dat()$num_comments) & current_dat()$num_comments!=0) / n_temp, "\n")) 
     })
-      
+
     
     output$info <- renderPrint({
         if (input$type == "time series") {
@@ -165,8 +167,12 @@ shinyServer(function(input, output) {
         } else {
             xvar = NULL
         }
-      brushedPoints(current_dat(), input$plot1_brush,
-                    xvar = xvar, yvar = input$statistic)  
+      
+      
+      #point = brushedPoints(current_dat(), input$plot1_brush, xvar = xvar, yvar = input$statistic)
+
+      print(brushedPoints(current_dat(), input$plot1_brush,
+                    xvar = xvar, yvar = input$statistic)[,c('status_type','company','status_message')])
   })
   
     observeEvent(input$plot1_dblclick, {
